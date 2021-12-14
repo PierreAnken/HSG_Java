@@ -8,12 +8,12 @@ public class MyThreadWritingSmallLetters extends Thread {
         super();
         comment="No number received yet!";  
     }
-    
+
     public String setComment(int comment){
         this.comment="Following number received: "+ comment;
         return "Comment set for thread "+this.getName();
     }
-    
+
     public void output(String s) {
         System.out.println(this.getName() + ": " + s + " "+ comment);
     }

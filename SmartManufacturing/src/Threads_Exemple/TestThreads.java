@@ -8,6 +8,7 @@ public class TestThreads extends Thread{
     }
       
     public static void main(String[] args) {
+
         Thread test=new TestThreads();
         test.start();
         
