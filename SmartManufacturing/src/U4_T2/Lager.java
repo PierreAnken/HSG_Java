@@ -10,7 +10,7 @@ package U4_T2;
 public class Lager {
     //Gibt  
     private final static int maxHolzeinheiten = 1000;
-    private final static int maxSchrauben = 50000;
+    private final static int maxSchrauben = 5000;
     private final static int maxFarbeinheiten = 1000;
     private final static int maxKartoneinheiten = 1000;
     private final static int maxKissen = 100;
