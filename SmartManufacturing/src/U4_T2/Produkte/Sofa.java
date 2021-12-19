@@ -1,4 +1,9 @@
-package U4_T2;
+package U4_T2.Produkte;
+
+import U4_T2.Roboters.HolzbearbeitungsRoboter;
+import U4_T2.Roboters.LackierRoboter;
+import U4_T2.Roboters.MontageRoboter;
+import U4_T2.Roboters.VerpackungsRoboter;
 
 /**
  * Klasse Sofa beinhaltet die spezifischen Informationen zum Sofa
@@ -28,7 +33,16 @@ public class Sofa extends Produkt
     {
         super();
     }
-    
+
+    @Override
+    void setzteProduktionsAblauf() {
+        // Sofa: Holzarbeit (30 Minuten) -> Spritzlackierung (5 Minuten) -> Montage (15 Minuten) -> Verpackung (10 Minutes)
+        produktionsAblauf.add(new HolzbearbeitungsRoboter(30));
+        produktionsAblauf.add(new LackierRoboter(5));
+        produktionsAblauf.add(new MontageRoboter(15));
+        produktionsAblauf.add(new VerpackungsRoboter(10));
+    }
+
     /**
      * Mit dieser Methode wird die benötigte Anzahl Holzeinheiten für die Produktion ausgegeben 
      * 

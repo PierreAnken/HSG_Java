@@ -1,5 +1,9 @@
 package U4_T2;
 
+import U4_T2.Produkte.Produkt;
+import U4_T2.Produkte.Sofa;
+import U4_T2.Produkte.Stuhl;
+
 import java.util.ArrayList;
 
 /**
@@ -66,6 +70,21 @@ public class Bestellung
         
     }
 
+    public void CheckLieferungStatus(){
+        for (Produkt product : bestellteProdukte) {
+            if(product.aktuellerZustand() != Zustand.BEREIT_FUR_AUSLIEFERUNG){
+                return;
+            }
+            setzeAlleProdukteProduziert();
+            System.out.println("Bestellung "+bestellungsNr+" würde geliefert!");
+        }
+
+    }
+
+    public boolean gibAlleProdukteProduziert(){
+        return alleProdukteProduziert;
+    }
+
     public void setzeAlleProdukteProduziert(){
         alleProdukteProduziert = true;
     }
@@ -95,7 +114,7 @@ public class Bestellung
      * 
      * @return Liste mit den bestellten Produkten
      */      
-    public ArrayList<Produkt> liefereBestellteProdukte()
+    public ArrayList<Produkt> gibBestellteProdukte()
     {
         return bestellteProdukte;         
     }    

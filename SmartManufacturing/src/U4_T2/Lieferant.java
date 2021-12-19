@@ -9,7 +9,7 @@ package U4_T2;
 public class Lieferant extends Thread
 {
 
-    private int waitTime = 15;
+    private int waitTime = 5;
     private Lager lager;
  
     /**

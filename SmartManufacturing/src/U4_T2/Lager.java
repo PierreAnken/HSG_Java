@@ -1,5 +1,9 @@
 package U4_T2;
 
+import U4_T2.Produkte.Produkt;
+import U4_T2.Produkte.Sofa;
+import U4_T2.Produkte.Stuhl;
+
 /**
  * Klasse Lager implementiert die Funktianalität eines Lagers, in welchem die notwendigen
  * Materialien für die Produktion gelagert ist
@@ -33,6 +37,7 @@ public class Lager {
      */
 
     public int gibBeschaffungsZeit(Bestellung kundenBestellung) {
+        // [Holz] - [Schrauben] - [Farben] - [Karton] - [Kissen]
 
         int[] grundMaterial = gibBenotigtGrundMaterial(kundenBestellung);
 
@@ -44,12 +49,20 @@ public class Lager {
                         && grundMaterial[4] <= vorhandeneKissen
         ) {
             return 0;
-        } else {
-            return 2;
         }
+
+        if (grundMaterial[0] > maxHolzeinheiten
+                || grundMaterial[1] > maxSchrauben
+                || grundMaterial[2] > maxFarbeinheiten
+                || grundMaterial[3] > maxKartoneinheiten
+                || grundMaterial[4] > maxKissen) {
+            return -1;
+        }
+
+        return 2;
     }
 
-    public void lagerAktualisieren(int[] newStock){
+    public void lagerAktualisieren(int[] newStock) {
         // [Holz] - [Schrauben] - [Farben] - [Karton] - [Kissen]
         vorhandeneHolzeinheiten = newStock[0];
         vorhandeneSchrauben = newStock[1];
@@ -58,11 +71,11 @@ public class Lager {
         vorhandeneKissen = newStock[4];
     }
 
-    public int[] lagerBestand(){
+    public int[] lagerBestand() {
         // [Holz] - [Schrauben] - [Farben] - [Karton] - [Kissen]
         return new int[]{
                 vorhandeneHolzeinheiten,
-                vorhandeneSchrauben ,
+                vorhandeneSchrauben,
                 vorhandeneFarbeinheiten,
                 vorhandeneKartoneinheiten,
                 vorhandeneKissen
@@ -75,7 +88,7 @@ public class Lager {
         // [Holz] - [Schrauben] - [Farben] - [Karton] - [Kissen]
         int[] grundMaterial = new int[]{0, 0, 0, 0, 0};
 
-        for (Produkt produkt : kundenBestellung.liefereBestellteProdukte()) {
+        for (Produkt produkt : kundenBestellung.gibBestellteProdukte()) {
             if (produkt instanceof Stuhl) {
                 grundMaterial[0] += Stuhl.gibBenoetigteHolzeinheiten();
                 grundMaterial[1] += Stuhl.gibBenoetigteSchrauben();
@@ -98,7 +111,7 @@ public class Lager {
      */
 
     public void lagerAuffuellen() {
-        if(lieferant == null)
+        if (lieferant == null)
             lieferant = new Lieferant(this);
     }
 
@@ -109,7 +122,6 @@ public class Lager {
         vorhandeneFarbeinheiten = maxFarbeinheiten;
         vorhandeneKartoneinheiten = maxKartoneinheiten;
         vorhandeneKissen = maxKissen;
-
         lieferant = null;
     }
 

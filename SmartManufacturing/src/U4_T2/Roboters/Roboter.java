@@ -1,6 +1,7 @@
 package U4_T2.Roboters;
 
-import U4_T2.Produkt;
+import U4_T2.Produkte.Produkt;
+import U4_T2.Zustand;
 
 import java.util.LinkedList;
 
@@ -10,8 +11,9 @@ public abstract class Roboter extends Thread{
     protected String name;
     protected int produktionsZeit;
 
-    public Roboter(){
+    public Roboter(int produktionsZeit){
         warteschlange = new LinkedList<>();
+        this.produktionsZeit = produktionsZeit;
         this.start();
     }
 
@@ -28,8 +30,19 @@ public abstract class Roboter extends Thread{
         return "";
     }
 
+
     public void produziereProdukt(Produkt produkt){
 
+        Roboter nextRobot = produkt.naechsteProduktionsStation();
+        // pass it to next robot
+        if(nextRobot != null){
+            nextRobot.fuegeProduktHinzu(produkt);
+            System.out.println("Produkt ausgegeben to Roboter"+nextRobot.getName());
+        }
+        else{
+            System.out.println("Produkt "+produkt.getClass()+ " is gebaut.");
+            produkt.zustandAendern(Zustand.BEREIT_FUR_AUSLIEFERUNG);
+        }
     }
 
     public void run() {
@@ -41,7 +54,12 @@ public abstract class Roboter extends Thread{
                 e.printStackTrace();
             }
 
-            //System.out.println("Roboter working");
+            // if we have something to build
+            if(!warteschlange.isEmpty()){
+                Produkt toProduce = warteschlange.removeFirst();
+                produziereProdukt(toProduce);
+            }
+
         }
 
     }

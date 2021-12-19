@@ -1,4 +1,9 @@
-package U4_T2;
+package U4_T2.Produkte;
+
+import U4_T2.Roboters.HolzbearbeitungsRoboter;
+import U4_T2.Roboters.LackierRoboter;
+import U4_T2.Roboters.MontageRoboter;
+import U4_T2.Roboters.VerpackungsRoboter;
 
 /**
  * Klasse Stuhl beinhaltet die spezifischen Informationen zum Stuhl
@@ -27,7 +32,16 @@ public class Stuhl extends Produkt
     {
         super();
     }
- 
+
+    @Override
+    void setzteProduktionsAblauf() {
+        // Stuhl: Holzarbeit (10 Minuten) -> Montage (5 Minuten) -> Spritzlackierung (2 Minuten) -> Verpackung (5 Minuten)
+        produktionsAblauf.add(new HolzbearbeitungsRoboter(10));
+        produktionsAblauf.add(new MontageRoboter(5));
+        produktionsAblauf.add(new LackierRoboter(2));
+        produktionsAblauf.add(new VerpackungsRoboter(5));
+    }
+
     /**
      * Mit dieser Methode wird die benötigte Anzahl Holzeinheiten für die Produktion ausgegeben 
      * 
