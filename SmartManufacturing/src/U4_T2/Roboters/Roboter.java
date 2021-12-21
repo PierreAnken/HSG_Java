@@ -11,23 +11,25 @@ public abstract class Roboter extends Thread{
     protected String name;
     protected int produktionsZeit;
 
-    public Roboter(int produktionsZeit){
+    public Roboter(){
         warteschlange = new LinkedList<>();
-        this.produktionsZeit = produktionsZeit;
+        this.produktionsZeit = 0;
         this.start();
     }
 
 
-    public void fuegeProduktHinzu(Produkt produkt){
+    public synchronized void fuegeProduktHinzu(Produkt produkt){
         warteschlange.add(produkt);
     }
 
-    public void setzteProduktionsZeit(int zeit){
+    abstract int berechneProduktionsZeit(Produkt produkt);
 
+    public void setzProduktionsZeit(int zeit){
+        produktionsZeit = zeit;
     }
 
     public String gibNamen(){
-        return "";
+        return this.getClass().getSimpleName();
     }
 
 
@@ -37,10 +39,10 @@ public abstract class Roboter extends Thread{
         // pass it to next robot
         if(nextRobot != null){
             nextRobot.fuegeProduktHinzu(produkt);
-            System.out.println("Produkt ausgegeben to Roboter"+nextRobot.getName());
+            System.out.println("Produkt ausgegeben to Roboter"+nextRobot.gibNamen());
         }
         else{
-            System.out.println("Produkt "+produkt.getClass()+ " is gebaut.");
+            System.out.println("Produkt "+produkt.getClass().getSimpleName()+ " ist gebaut.");
             produkt.zustandAendern(Zustand.BEREIT_FUR_AUSLIEFERUNG);
         }
     }
@@ -48,17 +50,24 @@ public abstract class Roboter extends Thread{
     public void run() {
 
         while(true){
+
+            // if we have something to build
+            int produktionZeit = 60;
+            if(!warteschlange.isEmpty() && produktionsZeit == 0){
+                Produkt toProduce = warteschlange.removeFirst();
+                produktionZeit = berechneProduktionsZeit(toProduce);
+                System.out.println("Bearbeitung von "+toProduce.getClass().getSimpleName()+" von "+this.getClass().getSimpleName()+" "+produktionZeit+" min.");
+                setzProduktionsZeit(produktionZeit);
+                produziereProdukt(toProduce);
+
+            }
+
             try {
-                Thread.sleep(1000);
+                Thread.sleep(1000L *produktionZeit/60);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-
-            // if we have something to build
-            if(!warteschlange.isEmpty()){
-                Produkt toProduce = warteschlange.removeFirst();
-                produziereProdukt(toProduce);
-            }
+            produktionsZeit = 0;
 
         }
 

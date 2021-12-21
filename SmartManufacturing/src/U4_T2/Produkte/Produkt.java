@@ -34,7 +34,7 @@ public abstract class Produkt {
 
     abstract void setzteProduktionsAblauf();
 
-    public Roboter naechsteProduktionsStation() {
+    public synchronized Roboter naechsteProduktionsStation() {
 
         if (produktionsAblauf.isEmpty())
             return null;

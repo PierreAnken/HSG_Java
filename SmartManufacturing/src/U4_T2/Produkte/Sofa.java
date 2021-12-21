@@ -1,5 +1,6 @@
 package U4_T2.Produkte;
 
+import U4_T2.ProduktionsManager;
 import U4_T2.Roboters.HolzbearbeitungsRoboter;
 import U4_T2.Roboters.LackierRoboter;
 import U4_T2.Roboters.MontageRoboter;
@@ -36,11 +37,11 @@ public class Sofa extends Produkt
 
     @Override
     void setzteProduktionsAblauf() {
-        // Sofa: Holzarbeit (30 Minuten) -> Spritzlackierung (5 Minuten) -> Montage (15 Minuten) -> Verpackung (10 Minutes)
-        produktionsAblauf.add(new HolzbearbeitungsRoboter(30));
-        produktionsAblauf.add(new LackierRoboter(5));
-        produktionsAblauf.add(new MontageRoboter(15));
-        produktionsAblauf.add(new VerpackungsRoboter(10));
+
+        produktionsAblauf.add(ProduktionsManager.holzRoboter);
+        produktionsAblauf.add(ProduktionsManager.lackierRoboter);
+        produktionsAblauf.add(ProduktionsManager.montageRoboter);
+        produktionsAblauf.add(ProduktionsManager.verpackungsRoboter);
     }
 
     /**

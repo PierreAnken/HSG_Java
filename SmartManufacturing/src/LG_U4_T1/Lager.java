@@ -46,7 +46,7 @@ public class Lager
      * 0 Tage, wenn alle Materialien vorhanden sind und 
      * 2 Tage, wenn diese nachbestellt werden müssen
      *
-     * @param Bestellung  eine Kundenbestellung mit allen bestellten Produkten im Array of Produkt
+     * @param kundenBestellung  eine Kundenbestellung mit allen bestellten Produkten im Array of Produkt
      * @return Beschaffungszeit in Tagen
      */  
     

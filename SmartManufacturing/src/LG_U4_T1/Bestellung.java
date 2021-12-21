@@ -36,8 +36,8 @@ public class Bestellung
      * Hier werden alle globalen Variablen initialisiert
      * 
      * @param bestellungsNr Zugeordnete Bestellnummer
-     * @param stuehle Anzahl bestellter Stühle
-     * @param sofas Anzahl bestellter Sofas 
+     * @param anzahlStuehle Anzahl bestellter Stühle
+     * @param anzahlSofas Anzahl bestellter Sofas
      */
     public Bestellung(int bestellungsNr, int anzahlStuehle, int anzahlSofas)
     {
@@ -115,7 +115,7 @@ public class Bestellung
     /**
      * Mit dieser Methode wird die Beschaffungszeit für die Bestellung gesetzt
      * 
-     * @param beschaffungszeit wird übergeben
+     * @param beschaffungsZeit wird übergeben
      */
     public void setzeBeschaffungsZeit(int beschaffungsZeit)
     {
@@ -159,8 +159,7 @@ public class Bestellung
 
     /**
      * Mit dieser Methode wird die Bestellnummer für die Bestellung ausgegeben 
-     * 
-     *@param bestellungsNr wird retourniert
+     *
      */
     public int gibBestellungsNr()
     {

@@ -8,10 +8,10 @@ import java.util.LinkedList;
 
 public class ProduktionsManager extends Thread{
 
-    private HolzbearbeitungsRoboter holzRoboter;
-    private MontageRoboter montageRoboter;
-    private LackierRoboter lackierRoboter;
-    private VerpackungsRoboter verpackungsRoboter;
+    public static HolzbearbeitungsRoboter holzRoboter;
+    public static MontageRoboter montageRoboter;
+    public static LackierRoboter lackierRoboter;
+    public static VerpackungsRoboter verpackungsRoboter;
     private Fabrik meinFabrik;
     private Lager meinLager;
     private LinkedList<Bestellung> zuVerarbeitendeBestellungen;
@@ -25,10 +25,10 @@ public class ProduktionsManager extends Thread{
         zuVerarbeitendeBestellungen = new LinkedList<>();
         bestellungenInProduktion = new LinkedList<>();
 
-        holzRoboter = new HolzbearbeitungsRoboter(0);
-        montageRoboter = new MontageRoboter(0);
-        lackierRoboter = new LackierRoboter(0);
-        verpackungsRoboter = new VerpackungsRoboter(0);
+        holzRoboter = new HolzbearbeitungsRoboter();
+        montageRoboter = new MontageRoboter();
+        lackierRoboter = new LackierRoboter();
+        verpackungsRoboter = new VerpackungsRoboter();
 
         this.start();
     }
@@ -37,6 +37,11 @@ public class ProduktionsManager extends Thread{
         System.out.println("ProduktionsManager: Neue Bestellung "+bestellung.gibBestellungsNr()+" zu verarbeiten.");
         zuVerarbeitendeBestellungen.add(bestellung);
     }
+
+    public synchronized LinkedList<Bestellung> getBestellungenInProduktion() {
+        return bestellungenInProduktion;
+    }
+
 
     public void run() {
 
@@ -49,21 +54,26 @@ public class ProduktionsManager extends Thread{
             }
 
             // Did we finish the production of a Bestellung?
-            for(Bestellung bestellung: bestellungenInProduktion){
+            for(Bestellung bestellung: getBestellungenInProduktion()){
                 bestellung.CheckLieferungStatus();
                 if(bestellung.gibAlleProdukteProduziert()){
-                    bestellungenInProduktion.remove(bestellung);
+                    getBestellungenInProduktion().remove(bestellung);
+                    System.out.println("Bestellung "+bestellung.gibBestellungsNr()+" bereits für Lieferung.");
+                    break;
                 }
             }
 
             // Do we have product to produce?
-            if(!bestellungenInProduktion.isEmpty()){
-                Bestellung inProduction = bestellungenInProduktion.getFirst();
+            if(!getBestellungenInProduktion().isEmpty()){
+                Bestellung inProduction = getBestellungenInProduktion().getFirst();
                 for (Produkt product:inProduction.gibBestellteProdukte()) {
                     // If we have a product not allocated to a robot
                     if(product.aktuellerZustand() != Zustand.PRODUKTION){
                         Roboter firstRobot = product.naechsteProduktionsStation();
-                        firstRobot.fuegeProduktHinzu(product);
+                        if(firstRobot != null){
+                            firstRobot.fuegeProduktHinzu(product);
+                            product.zustandAendern(Zustand.PRODUKTION);
+                        }
                     }
                 }
             }
@@ -85,7 +95,7 @@ public class ProduktionsManager extends Thread{
             }
 
             // Take raw material from lager
-            System.out.println("ProduktionsManager: Produzieren geplant für BE "+toProduce.gibBestellungsNr());
+
             int[] grundMaterial = meinLager.gibBenotigtGrundMaterial(toProduce);
             int[] aktuellesBestand = meinLager.lagerBestand();
             meinLager.lagerAktualisieren(
@@ -97,18 +107,12 @@ public class ProduktionsManager extends Thread{
                             aktuellesBestand[4]-grundMaterial[4],
                     }
             );
+
             // Setz die Bestellung in produktion
-            bestellungenInProduktion.add(zuVerarbeitendeBestellungen.removeFirst());
+            System.out.println("ProduktionsManager: Produzieren geplant für BE "+toProduce.gibBestellungsNr());
+            getBestellungenInProduktion().add(zuVerarbeitendeBestellungen.removeFirst());
 
-            // Gibt den Roboter die Produkte zu Bauen
-            for (Produkt product: toProduce.gibBestellteProdukte()) {
-                holzRoboter.fuegeProduktHinzu(product);
-                montageRoboter.fuegeProduktHinzu(product);
-                lackierRoboter.fuegeProduktHinzu(product);
-                verpackungsRoboter.fuegeProduktHinzu(product);
 
-                product.zustandAendern(Zustand.PRODUKTION);
-            }
         }
 
     }
