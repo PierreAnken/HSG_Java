@@ -35,7 +35,7 @@ public class Lieferant extends Thread
             }
 
             waitTime--;
-            System.out.println("Lieferant: Lieferung im :" + waitTime+"h");
+            System.out.println("Lieferant: Lieferung im " + waitTime+"h");
         }
 
         lager.wareLiefern();

@@ -116,7 +116,7 @@ public class Lager {
     }
 
     public void wareLiefern() {
-        System.out.println("Lager würde ausgefüllt");
+        System.out.println("Lager: aufgefüllt");
         vorhandeneHolzeinheiten = maxHolzeinheiten;
         vorhandeneSchrauben = maxSchrauben;
         vorhandeneFarbeinheiten = maxFarbeinheiten;

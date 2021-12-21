@@ -122,4 +122,8 @@ public class Fabrik {
 
         Aeki.bestellungAufgeben(5, 10);
     }
+
+    public Lager getLager() {
+        return lager;
+    }
 }

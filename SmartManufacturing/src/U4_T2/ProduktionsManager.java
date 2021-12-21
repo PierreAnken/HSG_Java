@@ -58,7 +58,7 @@ public class ProduktionsManager extends Thread{
                 bestellung.CheckLieferungStatus();
                 if(bestellung.gibAlleProdukteProduziert()){
                     getBestellungenInProduktion().remove(bestellung);
-                    System.out.println("Bestellung "+bestellung.gibBestellungsNr()+" bereits für Lieferung.");
+                    System.out.println("ProduktionsManager: Bestellung "+bestellung.gibBestellungsNr()+" bereits für Lieferung.");
                     break;
                 }
             }

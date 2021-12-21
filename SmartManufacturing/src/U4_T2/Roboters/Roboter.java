@@ -39,27 +39,40 @@ public abstract class Roboter extends Thread{
         // pass it to next robot
         if(nextRobot != null){
             nextRobot.fuegeProduktHinzu(produkt);
-            System.out.println("Produkt ausgegeben to Roboter"+nextRobot.gibNamen());
+            System.out.println(this.getClass().getSimpleName()+": Produkt ausgegeben to Roboter"+nextRobot.gibNamen());
         }
         else{
-            System.out.println("Produkt "+produkt.getClass().getSimpleName()+ " ist gebaut.");
+            System.out.println(this.getClass().getSimpleName()+": Produkt "+produkt.getClass().getSimpleName()+ " ist gebaut.");
             produkt.zustandAendern(Zustand.BEREIT_FUR_AUSLIEFERUNG);
         }
     }
 
     public void run() {
 
+        String lastProduktType = "";
+
         while(true){
 
             // if we have something to build
             int produktionZeit = 60;
+
             if(!warteschlange.isEmpty() && produktionsZeit == 0){
                 Produkt toProduce = warteschlange.removeFirst();
                 produktionZeit = berechneProduktionsZeit(toProduce);
-                System.out.println("Bearbeitung von "+toProduce.getClass().getSimpleName()+" von "+this.getClass().getSimpleName()+" "+produktionZeit+" min.");
+                System.out.println(this.getClass().getSimpleName()+": Bearbeitung von "+toProduce.getClass().getSimpleName()+" "+produktionZeit+" min.");
                 setzProduktionsZeit(produktionZeit);
                 produziereProdukt(toProduce);
 
+                // if we change produkt type
+                if(!lastProduktType.equals(toProduce.getClass().toString())){
+                    try {
+                        System.out.println(this.getClass().getSimpleName()+": Umstellung zu "+toProduce.getClass().getSimpleName()+" 1 Std warten...");
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    lastProduktType = toProduce.getClass().toString();
+                }
             }
 
             try {

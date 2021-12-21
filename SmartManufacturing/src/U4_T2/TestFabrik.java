@@ -1,8 +1,10 @@
 package U4_T2;
 
+import LG_U4_T1.Fabrik;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * The test class TestFabrik.
@@ -43,10 +45,13 @@ public class TestFabrik
     public void testProdukteBestellen()
     {
         Fabrik Aeki = new Fabrik();
-        Aeki.bestellungAufgeben(31000, 4);
-        Aeki.bestellungAufgeben(1, 4); 
-        Aeki.bestellungAufgeben(0, 10);         
+        Aeki.bestellungAufgeben(1, 4);
+        Aeki.bestellungAufgeben(20, 10);
+        System.out.println();
+        System.out.println("TestFabrik: Bestellungen ausgeben: ");
         Aeki.bestellungenAusgeben();
+        System.out.println("TestFabrik: Ware nachbestellen: ");
+        System.out.println();
         Aeki.lagerAuffuellen();
     }
 }

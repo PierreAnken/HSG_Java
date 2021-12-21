@@ -77,7 +77,7 @@ public class Bestellung {
             if(toProduce == 0)
                 setzeAlleProdukteProduziert();
             else
-                System.out.println("BE "+gibBestellungsNr()+" noch "+ toProduce+" produkte zu bauen.");
+                System.out.println("Bestellung: B"+gibBestellungsNr()+" noch "+ toProduce+" produkte zu bauen.");
         }
     }
 
